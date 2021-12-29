@@ -7,7 +7,8 @@ Your task is to complete the is_unlocked function which helps students determine
 if their course can be taken or not. 
 
 We will run our hidden tests on your submission and look at your success rate.
-We will also look over the code by eye.
+We will only test for courses inside conditions.json. We will also look over the 
+code by eye.
 
 NOTE: This challenge is EXTREMELY hard and we are not expecting anyone to pass all
 our tests. In fact, we are not expecting many people to even attempt this.
