@@ -31,8 +31,7 @@ var assert = require("assert")
 // Explanation: Empty array...
 
 const altNumbers = (numArray) => {
-    // TODO: Complete this function
-    return []
+    // TODO: COMPLETE THIS FUNCTION
 }
 
 module.exports = { altNumbers } // Do not modify this line
@@ -76,3 +75,17 @@ if (array3[0] === 0) {
 let array4 = []
 array4 = altNumbers(array4)
 assert(array4.length === 0)
+
+let array5 = [3,2,1,-1,-2,-3,-4]
+array5 = easy.altNumbers(array5)
+const answer5 = [-1, 3, -2, 2, -3, 1, -4]
+for (let i = 0; i < array5.length; i++) {
+    assert(array5[i] === answer5[i])
+}
+
+let array6 = [5,-1,-2,-3,-4,0,3]
+array6 = easy.altNumbers(array6)
+const answer6 = [-1, 5, -2, 0, -3, 3, -4]
+for (let i = 0; i < array6.length; i++) {
+    assert(array6[i] === answer6[i])
+}
