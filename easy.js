@@ -32,6 +32,12 @@ var assert = require("assert")
 
 const altNumbers = (numArray) => {
     
+    /* Method 1 
+
+    Go through array, separate + - numbers into 2 separate arrays
+    Depending on which array is longer, add the elements to a new array 
+    in order accordingly */
+
     const positive = [];
     const negative = [];
 
@@ -70,6 +76,70 @@ const altNumbers = (numArray) => {
     }
 
     return ret;
+
+    /* Method 2
+
+    Alternate positive and negative numbers starting with whatever is originally 
+    at index 0. After the sort, if the last 2 elements are both positive or both
+    negative, then that means element 0 should have been pos if it was neg, and 
+    neg if it was pos. To rectify this, we go through the array swapping 
+    elements 0 and 1, 2 and 3... swapping each pair except for the final element
+
+    *** Probably could have gone through the array first and see if there were 
+    more pos or neg numbers. That way we could have determined if we wanted 
+    element 0 to be pos or neg beforehand *** */
+    
+    /* let next = 'neg';
+
+    if (numArray[0] < 0) {
+        next = 'pos';
+    }
+
+    for (let i = 1; i < numArray.length; i++) {
+
+        if (next == 'pos') {
+
+            for (let j = i; j < numArray.length; j++) {
+                
+                if (numArray[j] >= 0) {
+                    numArray.splice(i, 0, numArray[j]);
+                    numArray.splice(j+1, 1);
+                    break;
+                }
+            }
+
+            next = 'neg';
+        } 
+
+        else {
+
+            for (let j = i; j < numArray.length; j++) {
+                
+                if (numArray[j] < 0) {
+                    numArray.splice(i, 0, numArray[j]);
+                    numArray.splice(j+1, 1);
+                    break;
+                }
+            }
+
+            next = 'pos';
+        }
+    }
+
+    if ((numArray[numArray.length-1] >= 0 && numArray[numArray.length-2] >= 0)
+        || (numArray[numArray.length-1] < 0 && numArray[numArray.length-2] < 0)) 
+    {
+        let temp = 0, i = 0;
+
+        while (i < numArray.length - 1) {
+            temp = numArray[i];
+            numArray[i] = numArray[i+1];
+            numArray[i+1] = temp;
+            i+=2;
+        }
+    }
+
+    return numArray; */
 }
 
 module.exports = { altNumbers } // Do not modify this line
