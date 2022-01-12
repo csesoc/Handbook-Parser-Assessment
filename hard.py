@@ -34,13 +34,14 @@ def is_unlocked(course_list, target_course):
     You can assume all courses are worth 6 units of credit
     """
 
-    def eval (uoc, courses):
+    def eval (uoc, courses):        # Checks whether the UOC condition has been met
 
-        if len(courses) > 1:
+        if len(courses) > 1:        # if courses was a list
             intersect = set(course_list) & set(courses)
             if len(intersect) >= uoc:
                 return intersect.pop()
-        else:
+
+        else:       # if courses was of the form ["COMP1"] for lvl 1 courses etc
             count = 0; course_type = courses[0]; 
             for course in course_list:
                 if course_type in course:
@@ -49,9 +50,29 @@ def is_unlocked(course_list, target_course):
             
             if count >= uoc:
                 return sample
+        
         return "UOC NOT MET"
     
-    dic = {
+    """
+    Dic Format Example  -    "Course": [[Arr1], [Arr2], final_condition]
+
+    For each Array within dic["Course"], if the last element was OR, check whether
+    any one of the courses within the Array exists in course_list
+
+    if the last element was AND, check whether the Array (without the AND) is a 
+    subset of course_list
+
+    for Arrays containing the eval function, the eval functioned returned a course
+    present in course_list if the UOC condition was met (TRUE), 
+    and "UOC NOT MET" if not (FALSE). This would provide the same desired output
+    when combined with the AND or OR in the arrays
+
+    For some conditions like that of COMP3151, I modified slightly to fit my format
+    COMP3151: COMP1927 OR ((COMP1521 OR DPST1092) AND COMP2521)     -->
+    COMP3151: COMP1927 OR (COMP1521 AND COMP2521) OR (DPST1092 AND COMP2521)
+    """
+
+    dic = {     
         "COMP1511": [["AND"], "OR"],
         "COMP1521": [["COMP1511", "DPST1091", "COMP1911", "COMP1917", "OR"], "OR"],
         "COMP1531": [["COMP1511", "DPST1091", "COMP1917", "COMP1921", "OR"], "OR"],
