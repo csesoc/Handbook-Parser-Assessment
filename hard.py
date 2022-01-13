@@ -22,7 +22,9 @@ import json
 with open("./conditions.json") as f:
     CONDITIONS = json.load(f)
     f.close()
-
+    
+# Just realized that it was probably intended for us to use CONDITIONS here (never worked w JSON before so just ignored it lol)
+# I'll try think up and put up another solution using it in another branch
 
 def is_unlocked(course_list, target_course):
     """Given a list of course codes a student has taken, return true if the target_course 
