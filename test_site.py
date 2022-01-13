@@ -1,95 +1,92 @@
-#### PERSONAL TESTING FILE ####
+from hard import CONDITIONS
 
-# OR = not set(a).disjoint(b) check if any of the elements exist in course_list
-# AND = set(a) <= set(b) check if subset of course_list
+def rmv_xtra_space(string):
+    string = string.split()
+    string = ' '.join(string)
+    return string
 
-# OR = if true in course_list then is good
-# AND = if false not in course_list then is good
-def eval (uoc, courses):
-    
-    if len(courses) > 1:
+def rmv_fullstop(string):
+    if string[-1] == '.':
+        string = string[:-1]
+    return string
 
-        intersect = set(course_list) & set(courses)
+def convert_or(string):
+    for i in range(len(string) - 1):
+        if string[i:i+2] == 'or':
+            string = string[0:i] + "OR" + string[i+2:]
+    return string
 
-        if len(intersect) >= uoc:
-            return intersect.pop()
-    
+def convert_and(string):
+    for i in range(len(string) - 2):
+        if string[i:i+3] == 'and':
+            string = string[0:i] + "AND" + string[i+3:]
+    return string
+
+def in_course_list(course, course_list):
+    if course in course_list:
+        return True
+    return False
+
+def is_unlocked(course_list, target_course):
+    if len(target_course) != 8:
+        string = target_course
     else:
+        string = CONDITIONS[target_course]
+    string = rmv_xtra_space(string)
+    string = rmv_fullstop(string)
+    string = convert_or(string)
+    string = convert_and(string)
+    
+    condition_arr = []
+    prereq_arr = string.split()
+    i = 0; j = 0; open_bracket = -1; end = False
+    while i < len(prereq_arr):
+
+        if prereq_arr[i][0] == "(":
+            while i+j < len(prereq_arr):
+                
+                prereq = prereq_arr[i+j]
+                for char in prereq:
+
+                    if char == "(":
+                        open_bracket += 1
+                    elif char == ")":
+                        if open_bracket == 0:
+                            end = True
+                        else:
+                            open_bracket -= 1
+
+                if end:
+                    break
+                j += 1
+
+            prereq_arr[i] = " ".join(prereq_arr[i:i+j+1])
+            prereq_arr = prereq_arr[:i+1] + prereq_arr[i+j+1:]
+            j = 0
+            open_bracket = 0
         
-        count = 0; course_type = courses[0]; 
+        elif prereq_arr[i] == "AND" or prereq_arr[i] == "OR":
+            condition_arr.append(prereq_arr[i])
+            prereq_arr.remove(prereq_arr[i])
+            i -= 1
 
-        for course in course_list:
-            if course_type in course:
-                count += 1
-                sample = course
-        
-        if count >= uoc:
-            return sample
+        i += 1
     
-    return "UOC NOT MET"
+    
+    for i in range(len(prereq_arr)):
+        course_type  = prereq_arr[i][:4]
+        if course_type == "COMP" or course_type == "MTRN" or course_type == "DPST" or course_type == "MATH":
+            prereq_arr[i] = in_course_list(prereq_arr[i], course_list)
+        elif course_type[0] == "(":
+            prereq_arr[i] = is_unlocked(course_list, prereq_arr[i][1:-1])
+    print(prereq_arr)
+    for condition in condition_arr:
+        if condition == "OR":
+            prereq_arr = [prereq_arr[0] or prereq_arr[1]] + prereq_arr[2:]
+        if condition == "AND":
+            prereq_arr = [prereq_arr[0] and prereq_arr[1]] + prereq_arr[2:]
+        print(prereq_arr)
+    
+    return prereq_arr[0]
 
-course_list = []
-
-dic = {
-    "COMP1511": [["AND"], "AND"],
-    "COMP1521": [["COMP1511", "DPST1091", "COMP1911", "COMP1917", "OR"], "OR"],
-    "COMP1531": [["COMP1511", "DPST1091", "COMP1917", "COMP1921", "OR"], "OR"],
-    "COMP2041": [["COMP1511", "DPST1091", "COMP1917", "COMP1921", "OR"], "OR"],
-    "COMP2111": [["MATH1081", "OR"], ["COMP1511", "DPST1091", "COMP1921", "COMP1917", "OR"], "AND"],
-    "COMP2121": [["COMP1917", "COMP1921", "COMP1511", "DPST1091", "COMP1521", "DPST1092", "OR"], ["COMP1911", "MTRN2500", "AND"], "OR"],
-    "COMP2511": [["COMP1531", "OR"], ["COMP2521", "COMP1927", "OR"], "AND"],
-    "COMP2521": [["COMP1511", "DPST1091", "COMP1917", "COMP1921", "OR"], "OR"],
-    "COMP3121": [["COMP1927", "COMP2521", "OR"], "OR"],
-    "COMP3131": [["COMP2511", "COMP2911", "OR"], "OR"],
-    "COMP3141": [["COMP1927", "COMP2521", "OR"], "OR"],
-    "COMP3151": [["COMP1927", "OR"], ["COMP1521", "COMP2521", "AND"], ["DPST1092", "COMP2521", "AND"], "OR"],
-    "COMP3153": [["MATH1081", "OR"], "OR"],
-    "COMP3161": [["COMP1927", "COMP2521", "OR"], "OR"],
-    "COMP3211": [["COMP3222", "ELEC2141", "OR"], "OR"],
-    "COMP3900": [["COMP1531", "OR"], ["COMP2521", "COMP1927", "OR"], [eval(102 / 6, [""]), "OR"], "AND"],
-    "COMP3901": [[eval(12 / 6, ["COMP1"]), "OR"], [eval(18 / 6, ["COMP2"]), "OR"], "AND"],
-    "COMP3902": [["COMP3901", "OR"], [eval(12 / 6, ["COMP3"]), "OR"], "AND"],
-    "COMP4121": [["COMP3121", "COMP3821", "OR"], "OR"],
-    "COMP4128": [["COMP3821", "OR"], ["COMP3121", eval(12 / 6, ["COMP3"]), "AND"], "OR"],
-    "COMP4141": [["MATH1081", "OR"], ["COMP1927", "COMP2521", "OR"], "AND"],
-    "COMP4161": [[eval(18 / 6, [""]), "OR"], "OR"],
-    "COMP4336": [["COMP3331", "OR"], "OR"],
-    "COMP4418": [["COMP3411", "OR"], "OR"],
-    "COMP4601": [["COMP2511", "COMP2911", "OR"], [eval(24 / 6, [""]), "OR"], "AND"],
-    "COMP4951": [[eval(36 / 6, ["COMP"]), "OR"], "OR"],
-    "COMP4952": [["COMP4951", "OR"], "OR"],
-    "COMP4953": [["COMP4952", "OR"], "OR"],
-    "COMP9301": [[eval(12 / 6, ["COMP6443", "COMP6843", "COMP6445", "COMP6845", "COMP6447"]), "OR"], "OR"],
-    "COMP9302": [["COMP6441", "COMP6841", "OR"], [eval(12 / 6, ["COMP6443", "COMP6843", "COMP6445", "COMP6845", "COMP6447"]), "OR"], "AND"],
-    "COMP9417": [["MATH1081", "OR"], ["COMP1531", "COMP2041", "COMP1927", "COMP2521", "OR"], "AND"],
-    "COMP9418": [["MATH5836", "COMP9417", "OR"], "OR"],
-    "COMP9444": [["COMP1927", "COMP2521", "MTRN3500", "OR"], "OR"],
-    "COMP9447": [["COMP6441", "COMP6841", "COMP3441", "OR"], "OR"],
-    "COMP9491": [[eval(18 / 6, ["COMP9417", "COMP9418", "COMP9444", "COMP9447"]), "OR"], "OR"]
-}
-
-prereq = dic["COMP1511"]
-truth_table = []
-final_condition = prereq.pop()
-
-print(course_list , prereq)
-
-for arr in prereq:
-    condition = arr.pop()
-    if condition == "OR":
-        print(course_list , arr)
-        truth_table.append(not set(arr).isdisjoint(course_list))
-    elif condition == "AND":
-        print(course_list , arr)
-        truth_table.append(set(arr) <= set(course_list))
-print(truth_table)
-if final_condition == "AND":
-    if False not in truth_table:
-        print("True")
-    else:
-        print("False")
-elif final_condition == "OR":
-    if True in truth_table:
-        print("True")
-    else:
-        print("False")
+print(is_unlocked(["COMP1928", "COMP1521", "DPST1093", "COMP2521"], "COMP3151"))
