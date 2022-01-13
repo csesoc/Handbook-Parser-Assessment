@@ -1,3 +1,5 @@
+#### PERSONAL TESTING FILE ####
+
 # OR = not set(a).disjoint(b) check if any of the elements exist in course_list
 # AND = set(a) <= set(b) check if subset of course_list
 
