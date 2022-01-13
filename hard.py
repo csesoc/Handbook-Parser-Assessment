@@ -62,7 +62,7 @@ def is_unlocked(course_list, target_course):
     if the last element was AND, check whether the Array (without the AND) is a 
     subset of course_list
 
-    for Arrays containing the eval function, the eval functioned returned a course
+    For Arrays containing the eval function, the eval functioned returned a course
     present in course_list if the UOC condition was met (TRUE), 
     and "UOC NOT MET" if not (FALSE). This would provide the same desired output
     when combined with the AND or OR in the arrays
