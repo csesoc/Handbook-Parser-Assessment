@@ -203,3 +203,6 @@ def is_unlocked(course_list, target_course):
             prereq_arr = [prereq_arr[0] and prereq_arr[1]] + prereq_arr[2:]
     
     return prereq_arr[0]
+
+# Note: This probably only works because I took advantage of similar patterns in the conditions
+# e.g. The uoc prereqs were always like "__ units of credits in ___"
