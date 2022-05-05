@@ -10,11 +10,8 @@ We will run our hidden tests on your submission and look at your success rate.
 We will only test for courses inside conditions.json. We will also look over the 
 code by eye.
 
-NOTE: This challenge is EXTREMELY hard and we are not expecting anyone to pass all
-our tests. In fact, we are not expecting many people to even attempt this.
-For complete transparency, this is worth more than the easy challenge. 
-A good solution is favourable but does not guarantee a spot in Projects because
-we will also consider many other criteria.
+NOTE: We do not expect you to come up with a perfect solution. We are more interested
+in how you would approach a problem like this.
 """
 import json
 

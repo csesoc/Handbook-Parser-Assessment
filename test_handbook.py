@@ -1,9 +1,8 @@
 """
 ====================TESTS====================
-You may add your own tests if you would like. We will run our much more extensive
-hidden tests on your submission.
+You may add your own tests if you would like.
 """
-from hard import is_unlocked
+from handbook import is_unlocked
 
 def test_empty():
     assert is_unlocked([], "COMP1511") == True
