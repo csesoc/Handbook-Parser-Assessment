@@ -1,4 +1,4 @@
-Application form: https://docs.google.com/forms/d/1CHLigReDKF6dgzqzrPTHdYZEmQOgD445HLgKG5ePpeY/viewform
+Application form: https://bit.ly/Projects-Recruitment-Form-22T3
 
 1. Fork this repo
 2. Start off by reading handbook.py
